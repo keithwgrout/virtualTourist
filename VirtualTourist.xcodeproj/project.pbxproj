@@ -14,6 +14,7 @@
 		534058141D1C0E860052703D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 534058131D1C0E860052703D /* Assets.xcassets */; };
 		534058171D1C0E860052703D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 534058151D1C0E860052703D /* LaunchScreen.storyboard */; };
 		5340581F1D1C13900052703D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5340581E1D1C13900052703D /* MapKit.framework */; };
+		534058211D1C14160052703D /* todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534058201D1C14160052703D /* todo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		534058161D1C0E860052703D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		534058181D1C0E860052703D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5340581E1D1C13900052703D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		534058201D1C14160052703D /* todo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = todo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 		534057FD1D1C0E860052703D = {
 			isa = PBXGroup;
 			children = (
+				534058201D1C14160052703D /* todo.swift */,
 				5340581E1D1C13900052703D /* MapKit.framework */,
 				534058081D1C0E860052703D /* VirtualTourist */,
 				534058071D1C0E860052703D /* Products */,
@@ -146,6 +149,7 @@
 				5340580C1D1C0E860052703D /* MapViewController.swift in Sources */,
 				5340580A1D1C0E860052703D /* AppDelegate.swift in Sources */,
 				534058121D1C0E860052703D /* VirtualTourist.xcdatamodeld in Sources */,
+				534058211D1C14160052703D /* todo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
