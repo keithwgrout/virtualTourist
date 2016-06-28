@@ -31,10 +31,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Wp2-r7-SHK"/>
+                    <connections>
+                        <outlet property="myMapView" destination="WJy-Qc-04m" id="Zvj-o7-y6P"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1137" y="400"/>
+            <point key="canvasLocation" x="1205" y="400"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3In-Um-SPC">
