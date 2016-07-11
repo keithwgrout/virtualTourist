@@ -8,46 +8,48 @@
 
 import Foundation
 
-// Tapping and holding the map drops a new pin. Users can place any number of pins on the map.
-// Going to just do a review on mapkit and annotations
 
-// When a pin is tapped, the app will navigate to the Photo Album view associated with the pin.
-// Going to watch some collectionView videos, as well as a bit more about understanding how to create a model in core data for a pin, and a photo
-
-
-
-// a flickr client needs to be created.
-// a bunch of images need to be downloaded
-
-
-
-// ToDO
-// watch a few videos on creating models with CoreData
-
-// The Model
 
 /*
+
+ When a photo album view is opened for a pin that does not yet have any photos, does it begin to download images from Flickr?
+
+ i have the photo url, now i need to send a request to flickr with the url to get a photo returned
  
- I need to have a Pin entity and a Photo entity
- 
- Pin:
- 
- Facts: 
- 
-    1 pin can have many photos
-    A pin will need to be an annotation
-    A pin will have coordinates
-    The pin will show a photo collection when tapped
-    The pins need to be persisted in core data
- 
- // what are the relationships between pins and photos
- // what properties do pins have
- // what properties do photos have
+ i have the photo data.
  
  
+ 1. setup a bbox property inside PAVC
+ 2. click on annotation in MVC
+ 3. create BBOX in MVC
+ 4. prepareForSegue from MVC, pass BBox to bbox property in PAVC
+ 5. call flickrClient.getphotos inside PAVC, passing in bbox
+ 
+ 
+ 6. when i have photos, show them in the collection view
+ 61. Figure out how to download photos without making 250 requests
+ 62. Look into subclassing
+ 
+ 
+ 
+ 
+ 7. store the photos to core data
+ 
+
+
+
+ 
+ 
+ 
+ 
+
  
  
  
  
  
  */
+
+
+ 
+ 
