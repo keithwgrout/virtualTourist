@@ -43,13 +43,22 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         
+        print("0. MapViewController viewDidLoad: PASS")
         super.viewDidLoad()
         myMapView.delegate = self
+        
+        // ****** ADD GESTURE RECOGNIZER *******
         
         let longPress = UILongPressGestureRecognizer(target: self, action: .addPin)
         longPress.minimumPressDuration = 0.5
         myMapView.addGestureRecognizer(longPress)
         
+        
+        
+        
+        
+        
+        // ****** FETCH PINS, (if already saved) ******
         
         let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         let context = appDel.managedObjectContext
@@ -63,38 +72,29 @@ class MapViewController: UIViewController {
         }
         
         
+        
+        
+        
+        // ****** ADD FETCHED PINS TO MAP, if available ******
+        
         if let results =  results as! [Pin]? where results.count > 0 {
-            
             for pin in results {
-            
                 let lat = pin.latitude as! CLLocationDegrees
                 let lon = pin.longitude as! CLLocationDegrees
                 let coords = CLLocationCoordinate2D(latitude: lat, longitude: lon)
                 let annotation = PinAnnotation(withCoordinates: coords, andTitle: "pin")
                 myMapView.addAnnotation(annotation)
             }
-            
         } else {
             print("no results yet")
         }
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        // ****** LOAD THE MAPS LAST KNOWN COORDINATES, OTHERWISE STORE THE CURRENT COORDINATES ******
+
         // the region is what we need to set
         // nsuserDefaults can only store basic data types
-        // so we need to store the doubles and turn the into a region
+        // so we need to store the doubles and turn them into a region
         let region = myMapView.region
         let currSpan = region.span
         let currCenter = region.center
@@ -166,8 +166,8 @@ extension MapViewController: MKMapViewDelegate {
         
         let annotation = view.annotation!
         let coordinates = annotation.coordinate
-        let lat = coordinates.latitude  // 33.432
-        let lon = coordinates.longitude // 33.
+        let lat = coordinates.latitude
+        let lon = coordinates.longitude
         
         let coordinateDelta = 0.10
         
@@ -176,8 +176,11 @@ extension MapViewController: MKMapViewDelegate {
         let minLat = String(lat - coordinateDelta)
         let minLon = String(lon - coordinateDelta)
         
-        let bbox : [String:String] = ["minLon":minLon, "minLat":minLat, "maxLon":maxLon, "maxLat":maxLat ]
-        self.BBox = bbox
+        
+        self.BBox = ["minLon":minLon, "minLat":minLat, "maxLon":maxLon, "maxLat":maxLat ]
+        
+        print("1. about to perform segue: PASS")
+        print("2. bbox created: PASS")
         
         performSegueWithIdentifier("PhotoAlbumSegue", sender: self)
 
@@ -190,6 +193,8 @@ extension MapViewController: MKMapViewDelegate {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
 
+        print("3. prepping Segue: PASS")
+        
         let PAVC = segue.destinationViewController as! PhotoAlbumViewController
         PAVC.photoBBox = BBox
     }

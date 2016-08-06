@@ -15,7 +15,7 @@ class Pin: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
     
     convenience init(context: NSManagedObjectContext){
-    
+        
         if let ent = NSEntityDescription.entityForName("Pin", inManagedObjectContext: context){
             self.init(entity: ent, insertIntoManagedObjectContext: context)
         } else {
