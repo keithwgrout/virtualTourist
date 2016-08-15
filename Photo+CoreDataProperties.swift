@@ -2,7 +2,7 @@
 //  Photo+CoreDataProperties.swift
 //  VirtualTourist
 //
-//  Created by KEITH GROUT on 8/11/16.
+//  Created by KEITH GROUT on 8/15/16.
 //  Copyright © 2016 keithwgrout. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu

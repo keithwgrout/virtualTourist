@@ -31,6 +31,7 @@ class MapViewController: UIViewController {
             myMapView.addAnnotation(annotation)
             let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
             let context = appDel.managedObjectContext
+            print(context)
             _ = Pin(context: context, latitude: coordinates.latitude, longitude: coordinates.longitude)
             
             do {

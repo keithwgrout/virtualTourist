@@ -17,6 +17,7 @@ class FlickrClient {
     
     var photoURLs = [NSURL]()
     let session = NSURLSession.sharedSession()
+    var page = 1
     
     
     
@@ -31,6 +32,7 @@ class FlickrClient {
 
     func getPhotoURLs(withBBox bbox:[String:String], completionHandlerForGetPhotos: (photos:[NSURL])-> Void ) {
         let request = buildURLRequest(withBBox: bbox)
+        page += 1
      
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
   
@@ -92,7 +94,7 @@ class FlickrClient {
         let url = Constants.requestURL +
             Methods.FlickrPhotosSearch +
             Parameters.returnJSON +
-            Parameters.api_key + "&nojsoncallback=1" + Parameters.bbox + BBOX // + "&per_page=21"
+            Parameters.api_key + "&nojsoncallback=1" + Parameters.bbox + BBOX + "&page=\(page)"
         let requestURL = NSURL(string: url)
         return NSURLRequest(URL: requestURL!)
     }
