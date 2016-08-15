@@ -45,46 +45,10 @@ class PhotoAlbumViewController: UIViewController {
 
 
 
-
-
-
-
-
-
-
-
-class PhotoCell: UICollectionViewCell {
-    
-    @IBOutlet weak var imgView: UIImageView!
-    var cellPhoto: Photo?
-    
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
-    
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-                print("cellForItem Called")
         let cell: PhotoCell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! PhotoCell
         
         if pin?.photos?.array.isEmpty == true {
@@ -101,27 +65,22 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                 // if image exists in core data, we will just load the image
                 // otherwise, we will download the image and then store it in core data
                 if let imageData = photo.image {
-                    //                    print("We have an image in Core Data. Applying Image. ")
                     cell.imgView.image = UIImage(data: imageData)
                     cell.spinner.stopAnimating()
                     cell.spinner.hidesWhenStopped = true
                 } else {
                     //        ******************************          INITIATE DOWNLOAD             ******************************
-                    //                    print("unable to find any imageData for this photo")
                     if let imageString = photo.url {
                         imageURL = NSURL(string: imageString)
                     } else {
                         print("else it up")
                     }
                     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-                        //                        print("heading to background thread .")
                         let imgData = NSData(contentsOfURL: imageURL!)
-                        //                        print("returned w/ data. creating image and adding to Photo.")
                         photo.image = imgData
                         
                         let image = UIImage(data: (photo.image!))
                         dispatch_async(dispatch_get_main_queue(), {
-                            //                            print("Main Q. applying image view, killing spinner.")
                             cell.imgView.image = image
                             cell.spinner.stopAnimating()
                             cell.spinner.hidesWhenStopped = true
@@ -157,12 +116,15 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         return (pin?.photos?.count)!
     }
     
+    
+    
     func getPhotos(){
-        let context = appDel.managedObjectContext
         if pin?.photos?.array.isEmpty == true {
             FlickrClient.sharedInstance.getPhotoURLs(withBBox: photoBBox!) { (photos) in
                 
                 dispatch_async(dispatch_get_main_queue(), {
+                    let context = self.appDel.managedObjectContext
+
                     for (index, url) in photos.enumerate() {
                         if index <= 20 {
                             let photo = Photo(context: context)
@@ -170,6 +132,8 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                             self.allPhotos.append(photo)
                         }
                     }
+                    // crashing here when called from reloadData on button press
+                    print("Crash occuring on button press at this point")
                     self.pin?.photos = NSMutableOrderedSet(array: self.allPhotos)
                     self.collectionView.reloadData()
                 })
@@ -183,4 +147,19 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     
     
 }
+
+
+
+class PhotoCell: UICollectionViewCell {
+    
+    @IBOutlet weak var imgView: UIImageView!
+    var cellPhoto: Photo?
+    
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    
+}
+
+
+
+
 
