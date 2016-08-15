@@ -14,12 +14,14 @@ import CoreData
 import CoreLocation
 
 class MapViewController: UIViewController {
-    
+    let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+
     @IBOutlet weak var myMapView: MKMapView!
     let defaults = NSUserDefaults.standardUserDefaults()
     var photo: UIImage? = nil
     var BBox : [String:String]?
-    
+    var pins = [Pin]()
+    var selectedPin: Pin?
     
     func addPin(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
@@ -29,13 +31,12 @@ class MapViewController: UIViewController {
             myMapView.addAnnotation(annotation)
             let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
             let context = appDel.managedObjectContext
-            let newPin = Pin(context: context)
-            newPin.latitude = coordinates.latitude
-            newPin.longitude = coordinates.longitude
+            _ = Pin(context: context, latitude: coordinates.latitude, longitude: coordinates.longitude)
             
             do {
                 try context.save()
-            } catch {
+            } catch let error as NSError {
+                print(error)
                 print("error could not save")
             }
         }
@@ -43,7 +44,6 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         
-        print("0. MapViewController viewDidLoad: PASS")
         super.viewDidLoad()
         myMapView.delegate = self
         
@@ -60,7 +60,6 @@ class MapViewController: UIViewController {
         
         // ****** FETCH PINS, (if already saved) ******
         
-        let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         let context = appDel.managedObjectContext
         let request = NSFetchRequest(entityName: "Pin")
         var results: [AnyObject]?
@@ -84,9 +83,12 @@ class MapViewController: UIViewController {
                 let coords = CLLocationCoordinate2D(latitude: lat, longitude: lon)
                 let annotation = PinAnnotation(withCoordinates: coords, andTitle: "pin")
                 myMapView.addAnnotation(annotation)
+                pins.append(pin)
             }
+            
+            
         } else {
-            print("no results yet")
+            print("There are no results from core data yet.\n")
         }
         
         
@@ -135,10 +137,12 @@ class MapViewController: UIViewController {
 
 }
 
+
 private extension Selector {
 
     static let addPin = #selector(MapViewController.addPin(_:))
 }
+
 
 extension MapViewController: MKMapViewDelegate {
     
@@ -158,45 +162,60 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         
-        // we want photos from the area of the pin annotation
-        // we need to pass in bbox coordinates as a parameter to our request
-        // so first we can start off with the coordinates of the annotation
-        // from there, we can make it easy and simply create a bbox based off
-        // of our center
         
         let annotation = view.annotation!
         let coordinates = annotation.coordinate
-        let lat = coordinates.latitude
-        let lon = coordinates.longitude
+        let lat = round(coordinates.latitude * 100000) / 100000
+        let lon = round(coordinates.longitude * 100000) / 100000
         
+        
+        // ********************     FIND ASSOCIATED PIN      *****************************
+        
+        let fetchRequest = NSFetchRequest(entityName: "Pin")
+        let ctext = appDel.managedObjectContext
+        var pinns = [Pin]()
+        
+        do {
+            pinns = try ctext.executeFetchRequest(fetchRequest) as! [Pin]
+
+        } catch {
+        
+        }
+        
+        
+        
+        
+        for pin in pinns {
+            if Double(pin.latitude!) == Double(lat) && Double(pin.longitude!) == Double(lon) {
+                self.selectedPin = pin
+            }
+        }
+        
+        
+        
+        
+        
+        // ********************         CREATE BBOX          *****************************
         let coordinateDelta = 0.10
-        
         let maxLat = String(lat + coordinateDelta)
         let maxLon = String(lon + coordinateDelta)
         let minLat = String(lat - coordinateDelta)
         let minLon = String(lon - coordinateDelta)
-        
-        
         self.BBox = ["minLon":minLon, "minLat":minLat, "maxLon":maxLon, "maxLat":maxLat ]
         
-        print("1. about to perform segue: PASS")
-        print("2. bbox created: PASS")
-        
         performSegueWithIdentifier("PhotoAlbumSegue", sender: self)
-
-        
-        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-
-        print("3. prepping Segue: PASS")
+        
         
         let PAVC = segue.destinationViewController as! PhotoAlbumViewController
         PAVC.photoBBox = BBox
+        PAVC.pin = self.selectedPin
+        
     }
 
     

@@ -12,51 +12,56 @@ import UIKit
 
 class FlickrClient {
     
-    // When accessing the FlickrClient, we should use the sharedInstance property
     static let sharedInstance = FlickrClient()
     private init(){}
+    
     var photoURLs = [NSURL]()
     let session = NSURLSession.sharedSession()
     
-
-   
     
+    
+    
+    
+    
+    
+    
+    
+    
+    //  ************************          GET PHOTO URL'S             ******************
+
     func getPhotoURLs(withBBox bbox:[String:String], completionHandlerForGetPhotos: (photos:[NSURL])-> Void ) {
-
-        // *************** FAST OUTER FUNCTION  ***********************
-        print("7. inside flickr.client.getPhotosURL: PASS")
         let request = buildURLRequest(withBBox: bbox)
-        
-        
-
-    
-                // *****************           DATA TASK             ********************
+     
+        let task = session.dataTaskWithRequest(request) { (data, response, error) in
+  
+            let photoArray = self.photoArrayFromData(data)
+            for photo in photoArray {
+                let photoURL = self.photoURLFromPhotoDic(photo)
+                self.photoURLs.append(photoURL)
                 
-                let task = session.dataTaskWithRequest(request) { (data, response, error) in
-
-                    print("\ninside completion handler for data task")
-                    
-                    let photoArray = self.photoArrayFromData(data)
-                    for photo in photoArray {
-                        let photoURL = self.photoURLFromPhotoDic(photo)
-                        self.photoURLs.append(photoURL)
-                    }
-                    
-                    completionHandlerForGetPhotos(photos: self.photoURLs)
-                }
-                // *****************         END DATA TASK                   ********************
-
-        
-        
-        
-
-        
-        // *************** RESUME OUTER FUNCTION  ***********************
-
+            }
+            completionHandlerForGetPhotos(photos: self.photoURLs)
+            self.photoURLs.removeAll()
+        }
         task.resume()
     }
     
-    // HELPERS
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // ************************          HELPERS          ******************
+    
     func photoURLFromPhotoDic(photoDictionary: [String:AnyObject]) -> NSURL {
         let farmID = String(photoDictionary["farm"]!)
         let serverID = String(photoDictionary["server"]!)
@@ -87,7 +92,7 @@ class FlickrClient {
         let url = Constants.requestURL +
             Methods.FlickrPhotosSearch +
             Parameters.returnJSON +
-            Parameters.api_key + "&nojsoncallback=1" + Parameters.bbox + BBOX + "&per_page=21"
+            Parameters.api_key + "&nojsoncallback=1" + Parameters.bbox + BBOX // + "&per_page=21"
         let requestURL = NSURL(string: url)
         return NSURLRequest(URL: requestURL!)
     }

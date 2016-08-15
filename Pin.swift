@@ -14,14 +14,15 @@ class Pin: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
     
-    convenience init(context: NSManagedObjectContext){
+    convenience init(context: NSManagedObjectContext, latitude: Double, longitude: Double){
         
         if let ent = NSEntityDescription.entityForName("Pin", inManagedObjectContext: context){
             self.init(entity: ent, insertIntoManagedObjectContext: context)
+            self.latitude = round(latitude * 100000) / 100000
+            self.longitude = round(longitude * 100000) / 100000
         } else {
             fatalError("Unable to find entity name.")
         }
-        
     }
-
+    
 }

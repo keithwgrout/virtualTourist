@@ -10,7 +10,14 @@ import UIKit
 import MapKit
 
 class PhotoAlbumViewController: UIViewController {
-
+   
+    var count = 0
+    
+    var photoBBox: [String: String]?
+    var pin: Pin?
+    var allPhotos = [Photo]()
+    let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -18,27 +25,26 @@ class PhotoAlbumViewController: UIViewController {
     @IBAction func reloadData(sender: UIBarButtonItem) {
         collectionView?.reloadData()
     }
-    
-    var photoURLs = [NSURL]()
-    var photoBBox: [String: String]?
-    var count = 0
-    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        print("4. PAVC viewDidLoad: PASS ")
-
-        // TODO: implement cache
+    
+        let context = appDel.managedObjectContext
         
-        FlickrClient.sharedInstance.getPhotoURLs(withBBox: photoBBox!) { (photos) in
-            self.photoURLs = photos
-            dispatch_async(dispatch_get_main_queue(), {
-                self.collectionView.reloadData()
-            })
+        if pin?.photos?.array.isEmpty == true {
+            FlickrClient.sharedInstance.getPhotoURLs(withBBox: photoBBox!) { (photos) in
+  
+                dispatch_async(dispatch_get_main_queue(), {
+                    for url in photos {
+                        let photo = Photo(context: context)
+                        photo.url = url.absoluteString
+                        self.allPhotos.append(photo)
+                    }
+                    self.pin?.photos = NSOrderedSet(array: self.allPhotos)
+                    self.collectionView.reloadData()
+                })
+            }
         }
-        
-        
-        
     }
 }
 
@@ -58,19 +64,10 @@ class PhotoAlbumViewController: UIViewController {
 class PhotoCell: UICollectionViewCell {
     
     @IBOutlet weak var imgView: UIImageView!
+    var cellPhoto: Photo?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        print("Cell Created")
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    
-    
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+
 }
 
 
@@ -84,7 +81,6 @@ class PhotoCell: UICollectionViewCell {
 
 
 
-var imageCache = [String:UIImage]()
 
 
 
@@ -96,38 +92,58 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        print("cellForItemAtIndexPath called: PASS")
         let cell: PhotoCell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! PhotoCell
-        var imageURL: NSURL?
-        imageURL = self.photoURLs[indexPath.item]
         
-        
-        
-        // if image exists in cache, we will just load the image
-        // otherwise, we will download the image and then store it in the cache
-        if let image = imageCache[imageURL!.absoluteString] {
-            cell.imgView.image = image
+        if pin?.photos?.array.isEmpty == true {
+            cell.spinner.startAnimating()
         } else {
-            //        ******************************          INITIATE DOWNLOAD             ******************************
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-                let imageData = NSData(contentsOfURL: imageURL!)
-                let image = UIImage(data: imageData!)
-                imageCache[imageURL!.absoluteString] = image
-                dispatch_async(dispatch_get_main_queue(), {
-                    cell.imgView.image = image
-                })
+            
+            if indexPath.item < pin?.photos?.count {
+                cell.cellPhoto = (pin?.photos?.objectAtIndex(indexPath.item) as! Photo)
             }
-            //        ******************************          END INITIATE DOWNLOAD         ******************************
+            
+            if let photo = cell.cellPhoto {
+                var imageURL: NSURL?
+                
+                // if image exists in core data, we will just load the image
+                // otherwise, we will download the image and then store it in core data
+                if let imageData = photo.image {
+                    print("We have an image in Core Data. Applying Image. ")
+                    cell.imgView.image = UIImage(data: imageData)
+                    cell.spinner.stopAnimating()
+                    cell.spinner.hidesWhenStopped = true
+                } else {
+                    //        ******************************          INITIATE DOWNLOAD             ******************************
+                    print("unable to find any imageData for this photo")
+                    if let imageString = photo.url {
+                        imageURL = NSURL(string: imageString)
+                    } else {
+                        print("else it up")
+                    }
+                    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+                        print("heading to background thread .")
+                        let imgData = NSData(contentsOfURL: imageURL!)
+                        print("returned w/ data. creating image and adding to Photo.")
+                        photo.image = imgData
+                        
+                        let image = UIImage(data: (photo.image!))
+                        dispatch_async(dispatch_get_main_queue(), {
+                            print("Main Q. applying image view, killing spinner.")
+                            cell.imgView.image = image
+                            cell.spinner.stopAnimating()
+                            cell.spinner.hidesWhenStopped = true
+                        })
+                    }
+                    //        ******************************          END INITIATE DOWNLOAD         ******************************
+                }
+            }
+            
         }
-        
-
-
-        
-        
+        appDel.saveContext()
         return cell
     }
     
-        
+    
     
     
     
@@ -137,12 +153,13 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         return 1
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photoURLs.count
+        if pin?.photos?.count < 21 {
+            return (pin?.photos?.count)!
+        }
+        return 21
+        
     }
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        count += 1
-        print("will display cell: \(count)\n")
-    }
+    
 
     
     

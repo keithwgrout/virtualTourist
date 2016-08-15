@@ -20,6 +20,5 @@ class Photo: NSManagedObject {
         } else {
             fatalError("Unable to find entity name.")
         }
-        
     }
 }

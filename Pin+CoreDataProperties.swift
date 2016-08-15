@@ -2,7 +2,7 @@
 //  Pin+CoreDataProperties.swift
 //  VirtualTourist
 //
-//  Created by KEITH GROUT on 6/28/16.
+//  Created by KEITH GROUT on 8/11/16.
 //  Copyright © 2016 keithwgrout. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -16,6 +16,6 @@ extension Pin {
 
     @NSManaged var latitude: NSNumber?
     @NSManaged var longitude: NSNumber?
-    @NSManaged var photo: NSSet?
+    @NSManaged var photos: NSOrderedSet?
 
 }

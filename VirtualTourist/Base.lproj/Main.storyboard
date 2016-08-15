@@ -77,18 +77,24 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Px-jq-VxS">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                 </imageView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="GqD-vM-yuS">
+                                                    <rect key="frame" x="40" y="40" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="5Px-jq-VxS" secondAttribute="trailing" id="AV8-cL-VLy"/>
+                                            <constraint firstItem="GqD-vM-yuS" firstAttribute="centerY" secondItem="8nU-4S-l1i" secondAttribute="centerY" id="sig-2q-Tn5"/>
                                             <constraint firstItem="5Px-jq-VxS" firstAttribute="leading" secondItem="8nU-4S-l1i" secondAttribute="leading" id="slH-bl-T8s"/>
                                             <constraint firstAttribute="bottom" secondItem="5Px-jq-VxS" secondAttribute="bottom" id="snq-fv-bLg"/>
+                                            <constraint firstItem="GqD-vM-yuS" firstAttribute="centerX" secondItem="8nU-4S-l1i" secondAttribute="centerX" id="whg-YW-UGo"/>
                                             <constraint firstItem="5Px-jq-VxS" firstAttribute="top" secondItem="8nU-4S-l1i" secondAttribute="top" id="yhT-NN-Yay"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="imgView" destination="5Px-jq-VxS" id="Mll-ZE-P9O"/>
+                                            <outlet property="spinner" destination="GqD-vM-yuS" id="OMz-rY-w78"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
