@@ -77,10 +77,10 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                     }
                     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
                         let imgData = NSData(contentsOfURL: imageURL!)
-                        photo.image = imgData
-                        
-                        let image = UIImage(data: (photo.image!))
+                       
                         dispatch_async(dispatch_get_main_queue(), {
+                            photo.image = imgData
+                            let image = UIImage(data: (photo.image!))
                             cell.imgView.image = image
                             cell.spinner.stopAnimating()
                             cell.spinner.hidesWhenStopped = true
