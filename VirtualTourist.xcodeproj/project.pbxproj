@@ -14,7 +14,6 @@
 		534058141D1C0E860052703D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 534058131D1C0E860052703D /* Assets.xcassets */; };
 		534058171D1C0E860052703D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 534058151D1C0E860052703D /* LaunchScreen.storyboard */; };
 		5340581F1D1C13900052703D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5340581E1D1C13900052703D /* MapKit.framework */; };
-		534058211D1C14160052703D /* brief.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534058201D1C14160052703D /* brief.swift */; };
 		534058261D22EB490052703D /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534058221D22EB490052703D /* Photo+CoreDataProperties.swift */; };
 		534058271D22EB490052703D /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534058231D22EB490052703D /* Photo.swift */; };
 		534058281D22EB490052703D /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534058241D22EB490052703D /* Pin+CoreDataProperties.swift */; };
@@ -35,7 +34,6 @@
 		534058161D1C0E860052703D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		534058181D1C0E860052703D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5340581E1D1C13900052703D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		534058201D1C14160052703D /* brief.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = brief.swift; sourceTree = "<group>"; };
 		534058221D22EB490052703D /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		534058231D22EB490052703D /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		534058241D22EB490052703D /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -65,7 +63,6 @@
 				534058231D22EB490052703D /* Photo.swift */,
 				534058241D22EB490052703D /* Pin+CoreDataProperties.swift */,
 				534058251D22EB490052703D /* Pin.swift */,
-				534058201D1C14160052703D /* brief.swift */,
 				5340582E1D2C0F760052703D /* FlickrClient.swift */,
 				534058301D2C12990052703D /* FlickrConstants.swift */,
 				5340581E1D1C13900052703D /* MapKit.framework */,
@@ -181,7 +178,6 @@
 				534058261D22EB490052703D /* Photo+CoreDataProperties.swift in Sources */,
 				5340582F1D2C0F760052703D /* FlickrClient.swift in Sources */,
 				5340582B1D2578D00052703D /* Annotation.swift in Sources */,
-				534058211D1C14160052703D /* brief.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

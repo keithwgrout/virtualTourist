@@ -58,6 +58,18 @@
                                     <constraint firstAttribute="height" constant="171" id="d1Q-Bb-LVd"/>
                                 </constraints>
                             </mapView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKY-og-oUo">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="pNb-aJ-6wL"/>
+                                    <barButtonItem title="New Collection" id="BiV-6q-vEs">
+                                        <connections>
+                                            <action selector="reloadData:" destination="0OQ-dY-Ket" id="Vyg-wK-CxR"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="foa-Mi-Fr3"/>
+                                </items>
+                            </toolbar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="O7Q-Mx-jgi">
                                 <rect key="frame" x="0.0" y="236" width="600" height="320"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="r9e-3f-ZiM">
@@ -66,6 +78,13 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                                 </collectionViewFlowLayout>
+                                <label key="backgroundView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No Images Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QYl-0Q-SQZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="8nU-4S-l1i" customClass="PhotoCell" customModule="VirtualTourist" customModuleProvider="target">
                                         <rect key="frame" x="10" y="10" width="100" height="100"/>
@@ -74,7 +93,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Px-jq-VxS">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Px-jq-VxS">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                 </imageView>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="GqD-vM-yuS">
@@ -83,7 +102,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="5Px-jq-VxS" secondAttribute="trailing" id="AV8-cL-VLy"/>
                                             <constraint firstItem="GqD-vM-yuS" firstAttribute="centerY" secondItem="8nU-4S-l1i" secondAttribute="centerY" id="sig-2q-Tn5"/>
@@ -103,18 +122,6 @@
                                     <outlet property="delegate" destination="0OQ-dY-Ket" id="bMN-x4-bLq"/>
                                 </connections>
                             </collectionView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKY-og-oUo">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="pNb-aJ-6wL"/>
-                                    <barButtonItem title="New Collection" id="BiV-6q-vEs">
-                                        <connections>
-                                            <action selector="reloadData:" destination="0OQ-dY-Ket" id="Vyg-wK-CxR"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="foa-Mi-Fr3"/>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -133,12 +140,14 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="O7Q-Mx-jgi" id="vbs-sX-CDv"/>
+                        <outlet property="imagesLabel" destination="QYl-0Q-SQZ" id="Zto-Cx-rtN"/>
                         <outlet property="map" destination="qaS-ha-kbE" id="ZDU-7g-n2G"/>
+                        <outlet property="newPhotosButton" destination="BiV-6q-vEs" id="rEX-9C-Nqi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pSQ-ek-aQ5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1954" y="395"/>
+            <point key="canvasLocation" x="1869" y="400"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3In-Um-SPC">

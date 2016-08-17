@@ -31,7 +31,6 @@ class MapViewController: UIViewController {
             myMapView.addAnnotation(annotation)
             let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
             let context = appDel.managedObjectContext
-            print(context)
             _ = Pin(context: context, latitude: coordinates.latitude, longitude: coordinates.longitude)
             
             do {
@@ -148,45 +147,34 @@ private extension Selector {
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
         let reuseID = "pin"
-        
         var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseID) as? MKPinAnnotationView
-        
         if annotationView == nil {
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
         }
         annotationView?.animatesDrop = true
-        
         return annotationView
     }
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        
-        
         let annotation = view.annotation!
         let coordinates = annotation.coordinate
         let lat = round(coordinates.latitude * 100000) / 100000
         let lon = round(coordinates.longitude * 100000) / 100000
         
-        
         // ********************     FIND ASSOCIATED PIN      *****************************
         
         let fetchRequest = NSFetchRequest(entityName: "Pin")
         let ctext = appDel.managedObjectContext
-        var pinns = [Pin]()
+        var pins = [Pin]()
         
         do {
-            pinns = try ctext.executeFetchRequest(fetchRequest) as! [Pin]
-
+            pins = try ctext.executeFetchRequest(fetchRequest) as! [Pin]
         } catch {
         
         }
         
-        
-        
-        
-        for pin in pinns {
+        for pin in pins {
             if Double(pin.latitude!) == Double(lat) && Double(pin.longitude!) == Double(lon) {
                 self.selectedPin = pin
             }
