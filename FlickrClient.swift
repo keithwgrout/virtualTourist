@@ -36,6 +36,7 @@ class FlickrClient {
      
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
   
+            print("a download has occured")
             let photoArray = self.photoArrayFromData(data)
             for photo in photoArray {
                 let photoURL = self.photoURLFromPhotoDic(photo)
